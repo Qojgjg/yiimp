@@ -170,6 +170,7 @@ void sha256_double_hash_hex(const char *input, char *output, unsigned int len);
 #include "algos/beenode.h"
 #include "algos/bmw512.h"
 #include "algos/c11.h"
+#include "algos/curvehash.h"
 #include "algos/dedal.h"
 #include "algos/deep.h"
 // #include "algos/equi.h"

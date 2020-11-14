@@ -114,6 +114,7 @@ YAAMP_ALGO g_algos[] =
 	{"bmw", bmw_hash, 1, 0, 0},
 	{"bmw512", bmw512_hash, 0x100, 0, 0},
 	{"c11", c11_hash, 1, 0, 0},
+ 	{"curvehash", curve_hash, 0x10000, 0 },
 	{"decred", decred_hash, 1, 0 },
 	{"dedal", dedal_hash, 0x100, 0, 0},
 	{"deep", deep_hash, 1, 0, 0},
