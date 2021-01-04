@@ -296,7 +296,7 @@ echo <<<end
 </thead><tbody>
 end;
 
-$account = '';
+$account = '*';
 if ($DCR || $DGB) $account = '*';
 else if ($ETH) $account = $coin->master_wallet;
 
