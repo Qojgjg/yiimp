@@ -115,7 +115,7 @@ bool coind_validate_address(YAAMP_COIND *coind)
 	sprintf(params, "[\"%s\"]", coind->wallet);
 
 	json_value *json;
-    bool getaddressinfo = ((strcmp(coind->symbol,"DGB") == 0) || (strcmp(coind->symbol2, "DGB") == 0) || (strcmp(coind->symbol,"ASC") == 0) || (strcmp(coind->symbol2, "ASC") == 0) || (strcmp(coind->symbol,"TDC") == 0) || (strcmp(coind->symbol2, "TDC") == 0) || (strcmp(coind->symbol,"BRC") == 0) || (strcmp(coind->symbol2, "BRC") == 0) || (strcmp(coind->symbol,"BTC") == 0) || (strcmp(coind->symbol2, "BTC") == 0));	
+    bool getaddressinfo = ((strcmp(coind->symbol,"DGB") == 0) || (strcmp(coind->symbol2, "DGB") == 0) || (strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0) || (strcmp(coind->symbol,"ASC") == 0) || (strcmp(coind->symbol2, "ASC") == 0) || (strcmp(coind->symbol,"TDC") == 0) || (strcmp(coind->symbol2, "TDC") == 0) || (strcmp(coind->symbol,"BRC") == 0) || (strcmp(coind->symbol2, "BRC") == 0) || (strcmp(coind->symbol,"BTC") == 0) || (strcmp(coind->symbol2, "BTC") == 0));	
 	if(getaddressinfo)
 		json = rpc_call(&coind->rpc, "getaddressinfo", params);
 	else
@@ -227,6 +227,14 @@ void coind_init(YAAMP_COIND *coind)
 
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }	
+	
+		    bool is_uqb = ((strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0));
+
+    if (is_uqb) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
 	
 		    bool is_tdc = ((strcmp(coind->symbol,"TDC") == 0) || (strcmp(coind->symbol2, "TDC") == 0));
 
