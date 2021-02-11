@@ -114,7 +114,7 @@ void coinbase_create(YAAMP_COIND *coind, YAAMP_JOB_TEMPLATE *templ, json_value *
 	char script1[4*1024];
 	sprintf(script1, "%s%s%s08", eheight, templ->flags, etime);
 
-	char script2[32] = "73756d636f696e706f6f6c"; // name pool in hex ascii - use converter at https://www.rapidtables.com/convert/number/ascii-to-hex.html
+	char script2[32] = "7969696d70706f6f6c"; // "yiimppool" in hex ascii - use converter at https://www.rapidtables.com/convert/number/ascii-to-hex.html
 
 	if(!coind->pos && !coind->isaux && templ->auxs_size)
 		coinbase_aux(templ, script2);
