@@ -131,6 +131,7 @@ function BackendCoinsUpdate()
 //				$template = $remote->getblocktemplate('');
 //			else
 			$template = $remote->getblocktemplate('{}');
+                        $template = $remote->getblocktemplate('{"rules":["segwit"]}');
 
 			if($template && isset($template['coinbasevalue']))
 			{
