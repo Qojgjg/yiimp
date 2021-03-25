@@ -8,8 +8,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<meta name="description" content="cryptopool.builders for all your crypto server needs">
-	<meta name="keywords" content="cryptopool,builders,yiimp,anonymous,mining,pool,maxcoin,bitcoin,altcoin,auto,switch,exchange,profit">
+	<meta name="description" content="BitcoinIL Pool">
+	<meta name="keywords" content="BitcoinIL,BTCIL,pool,official,yiimp,anonymous,mining,pool,maxcoin,bitcoin,altcoin,auto,switch,exchange,profit">
 
 <?php
 

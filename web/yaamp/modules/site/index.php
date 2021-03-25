@@ -33,14 +33,12 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 
 <ul>
 
-<li>Welcome to your new mining pool, domain! </li>
-<li>This installation was completed using the Ultimate Crypto-Server Setup Installer.</li>
-<li>Any edits to this page should be made to, /home/crypto-data/yiimp/site/web/yaamp/modules/site/index.php</li>
+<li>Welcome to domain! </li>
 <li>&nbsp;</li>
 <li>No registration is required, we do payouts in the currency you mine. Use your wallet address as the username.</li>
 <li>&nbsp;</li>
-<li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b>, or <b><?= $min_sunday ?></b> on Sunday.</li>
-<li>For some coins, there is an initial delay before the first payout, please wait at least 6 hours before asking for support.</li>
+<li>Payouts are made automatically every <?= $payout_freq ?> for all balances above <b><?= $min_payout ?></b></li>
+<li>&nbsp;</li>
 <li>Blocks are distributed proportionally among valid submitted shares.</li>
 
 <br/>
@@ -77,9 +75,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 </td>
 <td>
 <select id="drop-coin">
-<option data-port='4533' data-algo='-a lyra2v2' data-symbol='SECI'>SECI (SECI)</option>
-<option data-port='7006' data-algo='-a x22i' data-symbol='SUQA'>SUQA (SUQA)</option>
-<option data-port='7008' data-algo='-a x11' data-symbol='FTO'>Futuro (FTO)</option>
+<option data-port='7008' data-algo='-a x17' data-symbol='BTCIL'>BitcoinIL</option>
 </select>
 </td>
 <td>
@@ -99,7 +95,6 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 <?php if (YAAMP_ALLOW_EXCHANGE): ?>
 <li>&lt;WALLET_ADDRESS&gt; can be one of any currency we mine or a BTC address.</li>
 <?php else: ?>
-<li>&lt;WALLET_ADDRESS&gt; should be valid for the currency you mine. <b>DO NOT USE a BTC address here, the auto exchange is disabled</b>!</li>
 <?php endif; ?>
 <li>As optional password, you can use <b>-p c=&lt;SYMBOL&gt;</b> if yiimp does not set the currency correctly on the Wallet page.</li>
 <li>See the "Pool Status" area on the right for PORT numbers. Algorithms without associated coins are disabled.</li>

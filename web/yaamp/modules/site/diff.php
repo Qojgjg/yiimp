@@ -1,7 +1,7 @@
 <br>
 
 <div class="main-left-box">
-<div class="main-left-title">cryptopool.builders Stratum Difficulty</div>
+<div class="main-left-title">Stratum Difficulty</div>
 <div class="main-left-inner">
 
 <p style="width: 700px;">By default, yiimp will adjust the difficulty of your miner automatically over time until
