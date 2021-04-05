@@ -15,8 +15,8 @@ echo <<<END
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-<meta name="description" content="BitcoinIL Pool">
-<meta name="keywords" content="BitcoinIL,BTCIL,pool,official,yiimp,anonymous,mining,pool,maxcoin,bitcoin,altcoin,auto,switch,exchange,profit">
+<meta name="description" content="Mining Pool">
+<meta name="keywords" content="mining,pool,official,yiimp,anonymous,mining,pool,maxcoin,bitcoin,altcoin,auto,switch,exchange,profit">
 
 END;
 
@@ -132,7 +132,7 @@ function showPageHeader()
 	$eta = ($mining->last_payout+YAAMP_PAYMENTS_FREQ) - time();
 	$eta_mn = 'in '.round($eta / 60).' minutes';
 
-	echo '<span id="nextpayout" style="font-size: .8em;" title="'.$eta_mn.'">Next Payout: '.$nextpayment.'</span>';
+	echo '<span id="nextpayout" style="font-size: .8em;" title="'.$nextpayment.'">Next Payout: '.$eta_mn.'</span>';
 	// echo '<span id="nextpayout" style="font-size: .8em;" title="'.$eta_mn.'">Next Payout: '.$nextpayment.' / '.$nextpaymentEUR.'</span>';
 	// echo '<span id="nextpayout" style="font-size: .8em;" title="'.$eta_mn.'">Next Payout: '.$nextpayment.' UTC (US) / '.$nextpaymentEUR.' UTC+2 (EUR)</span>';
 
@@ -146,7 +146,7 @@ function showPageFooter()
 	$year = date("Y", time());
 
 	echo "<p>&copy; $year ".YAAMP_SITE_NAME.' - '.
-		'<a href="/">BitcoinIL (BTCIL)</a></p>';
+		'<a href="/">Mining Pool</a></p>';
 
 	echo '</div><!-- footer -->';
 }
