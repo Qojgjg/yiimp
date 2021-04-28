@@ -212,7 +212,7 @@ void coind_init(YAAMP_COIND *coind)
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }
 	
-		    bool is_brtx = ((strcmp(coind->symbol,"BRTX") == 0) || (strcmp(coind->symbol2, "BRTX") == 0));
+	    bool is_brtx = ((strcmp(coind->symbol,"BRTX") == 0) || (strcmp(coind->symbol2, "BRTX") == 0));
 
     if (is_brtx) {
         if (json) json_value_free(json);
@@ -220,7 +220,7 @@ void coind_init(YAAMP_COIND *coind)
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }
 	
-		    bool is_xmy = ((strcmp(coind->symbol,"XMY") == 0) || (strcmp(coind->symbol2, "XMY") == 0));
+	    bool is_xmy = ((strcmp(coind->symbol,"XMY") == 0) || (strcmp(coind->symbol2, "XMY") == 0));
 
     if (is_xmy) {
         if (json) json_value_free(json);
@@ -228,7 +228,7 @@ void coind_init(YAAMP_COIND *coind)
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }	
 	
-		    bool is_caty = ((strcmp(coind->symbol,"CATY") == 0) || (strcmp(coind->symbol2, "CATY") == 0));
+	    bool is_caty = ((strcmp(coind->symbol,"CATY") == 0) || (strcmp(coind->symbol2, "CATY") == 0));
 
     if (is_caty) {
         if (json) json_value_free(json);
@@ -236,7 +236,7 @@ void coind_init(YAAMP_COIND *coind)
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }	
 	
-		    bool is_uqb = ((strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0));
+	    bool is_uqb = ((strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0));
 
     if (is_uqb) {
         if (json) json_value_free(json);
@@ -244,7 +244,7 @@ void coind_init(YAAMP_COIND *coind)
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }
 	
-		    bool is_ctc = ((strcmp(coind->symbol,"CTC") == 0) || (strcmp(coind->symbol2, "CTC") == 0));
+	    bool is_ctc = ((strcmp(coind->symbol,"CTC") == 0) || (strcmp(coind->symbol2, "CTC") == 0));
 
     if (is_ctc) {
         if (json) json_value_free(json);
@@ -252,7 +252,7 @@ void coind_init(YAAMP_COIND *coind)
         json = rpc_call(&coind->rpc, "getnewaddress", params);
     }
 	
-		    bool is_scho = ((strcmp(coind->symbol,"SCHO") == 0) || (strcmp(coind->symbol2, "SCHO") == 0));
+	    bool is_scho = ((strcmp(coind->symbol,"SCHO") == 0) || (strcmp(coind->symbol2, "SCHO") == 0));
 
     if (is_scho) {
         if (json) json_value_free(json);
