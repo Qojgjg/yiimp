@@ -198,9 +198,9 @@ class CronjobController extends CommonController
 		$mining->last_payout = time();
 		$mining->save();
 
-		memcache_set($this->memcache->memcache, 'apache_locked', true);
-		if(YAAMP_USE_NGINX)
-			system("service nginx stop");
+//		memcache_set($this->memcache->memcache, 'apache_locked', true);
+//		if(YAAMP_USE_NGINX)
+//			system("service nginx stop");
 
 		sleep(10);
 		BackendDoBackup();
