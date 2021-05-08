@@ -18,7 +18,6 @@ echo <<<END
 <th data-sorter="numeric" align="center">Port</th>
 <th data-sorter="numeric" align="center">Symbol</th>
 <th data-sorter="numeric" align="center">Miners<br/>Share/Solo</th>
-<th data-sorter="numeric" align="center">Miners</th>
 <th data-sorter="numeric" align="center">Pool HashRate</th>
 <th data-sorter="numeric" align="center">Network Hashrate</th>
 <th data-sorter="currency" align="center">Fees**</th>
