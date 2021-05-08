@@ -17,9 +17,7 @@ $count = $count? $count: 50;
 
 WriteBoxHeader("Last $count Earnings: $user->username");
 $earnings = getdbolist('db_earnings', "userid=$user->id order by create_time desc limit :count", array(':count'=>$count));
-
 echo <<<EOT
-
 <style type="text/css">
 span.block { padding: 2px; display: inline-block; text-align: center; min-width: 75px; border-radius: 3px; }
 span.block.invalid  { color: white; background-color: #d9534f; }
@@ -27,7 +25,6 @@ span.block.immature { color: white; background-color: #f0ad4e; }
 span.block.exchange { color: white; background-color: #5cb85c; }
 span.block.cleared  { color: white; background-color: gray; }
 </style>
-
 <table class="dataGrid2">
 <thead>
 <tr>
@@ -40,7 +37,6 @@ span.block.cleared  { color: white; background-color: gray; }
 <th align=right>Status</th>
 </tr>
 </thead>
-
 EOT;
 
 $showrental = (bool) YAAMP_RENTAL;
@@ -116,7 +112,6 @@ foreach($earnings as $earning)
 echo "</table>";
 
 echo "<br></div></div><br>";
-
 
 
 

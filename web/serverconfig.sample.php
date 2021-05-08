@@ -15,6 +15,8 @@ define('YAAMP_PRODUCTION', true);
 define('YAAMP_RENTAL', true);
 define('YAAMP_LIMIT_ESTIMATE', false);
 
+define('YAAMP_FEES_SOLO', 1);
+
 define('YAAMP_FEES_MINING', 0.5);
 define('YAAMP_FEES_EXCHANGE', 2);
 define('YAAMP_FEES_RENTING', 2);
@@ -80,9 +82,16 @@ $cold_wallet_table = array(
 
 // Sample fixed pool fees
 $configFixedPoolFees = array(
-        'zr5' => 2.0,
-        'scrypt' => 20.0,
-        'sha256' => 5.0,
+//        'zr5' => 2.0,
+//        'scrypt' => 20.0,
+//        'sha256' => 5.0,
+);
+
+// Sample fixed pool fees solo
+$configFixedPoolFeesSolo = array(
+//        'zr5' => 2.0,
+//        'scrypt' => 20.0,
+//        'sha256' => 5.0,
 );
 
 // Sample custom stratum ports

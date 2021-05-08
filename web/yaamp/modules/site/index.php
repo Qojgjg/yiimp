@@ -60,6 +60,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 <tr>
 <th>Stratum</th>
 <th>Coin</th>
+<th>Solo</th>
 <th>Wallet Address</th>
 <th>RigName</th>
 </tr>
@@ -71,6 +72,12 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 	<option value="cdn.">CDN Stratum</option>
 	<option value="euro.">Euro Stratum</option>
 	<option value="uk.">UK Stratum</option>
+</select>
+</td>
+<td>
+<select id="drop-solo" colspan="2" style="min-width: 140px; border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
+	<option value="">No</option>
+	<option value=",m=solo">Yes</option>
 </select>
 </td>
 <td>
@@ -201,18 +208,19 @@ function pool_history_refresh()
 
 <script>
 function getLastUpdated(){
-	var drop1 = document.getElementById('drop-stratum');
-	var drop2 = document.getElementById('drop-coin');
+	var stratum = document.getElementById('drop-stratum');;
+	var coin = document.getElementById('drop-coin');
+	var solo = document.getElementById('drop-solo');
 	var rigName = document.getElementById('text-rig-name').value;
 	var result = '';
 
-	result += drop2.options[drop2.selectedIndex].dataset.algo + ' -o stratum+tcp://';
-	result += drop1.value + 'miningcoins.ca:';
-	result += drop2.options[drop2.selectedIndex].dataset.port + ' -u ';
+	result += coin.options[coin.selectedIndex].dataset.algo + ' -o stratum+tcp://';
+	result += stratum.value + 'domain:';
+	result += coin.options[coin.selectedIndex].dataset.port + ' -u ';
 	result += document.getElementById('text-wallet').value;
 	if (rigName) result += '.' + rigName;
 	result += ' -p c=';
-	result += drop2.options[drop2.selectedIndex].dataset.symbol;
+	result += coin.options[coin.selectedIndex].dataset.symbol + solo.value;
 	return result;
 }
 function generate(){

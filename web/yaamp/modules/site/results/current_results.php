@@ -17,6 +17,7 @@ echo <<<END
 <th data-sorter="numeric" align="center">Auto Exchanged</th>
 <th data-sorter="numeric" align="center">Port</th>
 <th data-sorter="numeric" align="center">Symbol</th>
+<th data-sorter="numeric" align="center">Miners<br/>Share/Solo</th>
 <th data-sorter="numeric" align="center">Miners</th>
 <th data-sorter="numeric" align="center">Pool HashRate</th>
 <th data-sorter="numeric" align="center">Network Hashrate</th>
@@ -61,6 +62,7 @@ function cmp($a, $b)
 usort($algos, 'cmp');
 $total_coins = 0;
 $total_miners = 0;
+$total_solo = 0;
 $showestimates = false;
 echo "<tbody>";
 
@@ -84,9 +86,8 @@ foreach ($algos as $item)
     }
 
     if (!$coins) continue;
-    $workers = getdbocount('db_workers', "algo=:algo", array(
-        ':algo' => $algo
-    ));
+    $workers = getdbocount('db_workers', "algo=:algo and not password like '%m=solo%'", array(':algo' => $algo));
+    $solo_workers = getdbocount('db_workers',"algo=:algo and password like '%m=solo%'", array(':algo'=>$algo));
     $hashrate = controller()
         ->memcache
         ->get_database_scalar("current_hashrate-$algo", "select hashrate from hashrate where algo=:algo order by time desc limit 1", array(
@@ -120,6 +121,7 @@ foreach ($algos as $item)
     $algo_unit_factor = yaamp_algo_mBTC_factor($algo);
     $btcmhday1 = $hashrate1 != 0 ? mbitcoinvaluetoa($total1 / $hashrate1 * 1000000 * 1000 * $algo_unit_factor) : '';
     $fees = yaamp_fee($algo);
+    $fees_solo = yaamp_fee_solo($algo);
     $port = getAlgoPort($algo);
 
     if ($defaultalgo == $algo) echo "<tr style='cursor: pointer; background-color: #d9d9d9;' onclick='javascript:select_algo(\"$algo\")'>";
@@ -166,9 +168,10 @@ foreach ($algos as $item)
 
             if ($port_count == 1) echo "<td align='center' style='font-size: .8em;'><b>" . $port_db->port . "</b></td>";
             else echo "<td align='center' style='font-size: .8em;'><b>$port</b></td>";
-            echo "<td align='center' style='font-size: .8em;'>$symbol</td>";
-            if ($port_count == 1) echo "<td align='center' style='font-size: .8em;'>" . $port_db->workers . "</td>";
-            else echo "<td align='center' style='font-size: .8em;'>$workers</td>";
+
+	    echo "<td align='center' style='font-size: .8em;'>$symbol</td>";
+	    echo "<td align='center' style='font-size: .8em;'>$workers / $solo_workers</td>";
+
             $pool_hash = yaamp_coin_rate($coin->id);
             $pool_hash_sfx = $pool_hash ? Itoa2($pool_hash) . 'h/s' : '';
             echo "<td align='center' style='font-size: .8em;'>$pool_hash_sfx</td>";
@@ -213,6 +216,7 @@ foreach ($algos as $item)
 
     $total_coins += $coins;
     $total_miners += $workers;
+    $total_solo += $solo_workers;
 }
 
 echo "</tbody>";
@@ -223,7 +227,7 @@ echo "<td><b>all</b></td>";
 echo "<td></td>";
 echo "<td></td>";
 echo "<td align=center style='font-size: .8em;'>$total_coins</td>";
-echo "<td align=center style='font-size: .8em;'>$total_miners</td>";
+echo "<td align=center style='font-size: .8em;'>$total_miners / $total_solo</td>";
 echo "<td></td>";
 echo "<td></td>";
 echo '<td class="estimate"></td>';
