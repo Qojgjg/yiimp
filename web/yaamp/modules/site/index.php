@@ -75,14 +75,14 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 </select>
 </td>
 <td>
-<select id="drop-solo" colspan="2" style="min-width: 140px; border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
-	<option value="">No</option>
-	<option value=",m=solo">Yes</option>
+<select id="drop-coin">
+<option data-port='7008' data-algo='-a x17' data-symbol='BTCIL'>BitcoinIL</option>
 </select>
 </td>
 <td>
-<select id="drop-coin">
-<option data-port='7008' data-algo='-a x17' data-symbol='BTCIL'>BitcoinIL</option>
+<select id="drop-solo" colspan="2" style="min-width: 140px; border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
+	<option value="">No</option>
+	<option value=",m=solo">Yes</option>
 </select>
 </td>
 <td>
