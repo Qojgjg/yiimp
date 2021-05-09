@@ -45,17 +45,15 @@ define('YAAMP_DEFAULT_ALGO', 'x11');
 define('YAAMP_USE_NGINX', false);
 
 // Exchange public keys (private keys are in a separate config file)
-define('EXCH_CRYPTOPIA_KEY', '');
 define('EXCH_POLONIEX_KEY', '');
 define('EXCH_BITTREX_KEY', '');
 define('EXCH_BLEUTRADE_KEY', '');
+define('EXCH_BTER_KEY', '');
 define('EXCH_YOBIT_KEY', '');
-define('EXCH_CCEX_KEY', '');
 define('EXCH_CEXIO_ID', '');
 define('EXCH_CEXIO_KEY', '');
 define('EXCH_COINMARKETS_USER', '');
 define('EXCH_COINMARKETS_PIN', '');
-define('EXCH_CREX24_KEY', '');
 define('EXCH_BINANCE_KEY', '');
 define('EXCH_BITSTAMP_ID','');
 define('EXCH_BITSTAMP_KEY','');
@@ -63,8 +61,8 @@ define('EXCH_HITBTC_KEY','');
 define('EXCH_KRAKEN_KEY', '');
 define('EXCH_KUCOIN_KEY', '');
 define('EXCH_LIVECOIN_KEY', '');
-define('EXCH_NOVA_KEY', '');
 define('EXCH_STOCKSEXCHANGE_KEY', '');
+define('EXCH_TRADEOGRE_KEY','');
 
 // Automatic withdraw to Yaamp btc wallet if btc balance > 0.3
 define('EXCH_AUTO_WITHDRAW', 0.3);
@@ -82,16 +80,16 @@ $cold_wallet_table = array(
 
 // Sample fixed pool fees
 $configFixedPoolFees = array(
-//        'zr5' => 2.0,
-//        'scrypt' => 20.0,
-//        'sha256' => 5.0,
+        'zr5' => 2.0,
+        'scrypt' => 20.0,
+        'sha256' => 5.0,
 );
 
 // Sample fixed pool fees solo
 $configFixedPoolFeesSolo = array(
-//        'zr5' => 2.0,
-//        'scrypt' => 20.0,
-//        'sha256' => 5.0,
+		'zr5' => 2.0,
+        'scrypt' => 2.0,
+        'sha256' => 5.0,
 );
 
 // Sample custom stratum ports

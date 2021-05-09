@@ -9,9 +9,9 @@ function string_to_hashrate($s)
 {
 	$value = floatval(trim(preg_replace('/,/', '', $s)));
 
-	if(stripos($s, 'kh/s')) $value *= 1000;
-	if(stripos($s, 'mh/s')) $value *= 1000000;
-	if(stripos($s, 'gh/s')) $value *= 1000000000;
+	if(stripos($s, 'Kh/s')) $value *= 1000;
+	if(stripos($s, 'Mh/s')) $value *= 1000000;
+	if(stripos($s, 'Gh/s')) $value *= 1000000000;
 
 	return $value;
 }
@@ -125,86 +125,115 @@ function BackendCoinsUpdate()
 				$coin->auxpow = true;
 		}
 
-//		if($coin->symbol != 'BTC')
-//		{
-//			if($coin->symbol == 'PPC')
-//				$template = $remote->getblocktemplate('');
-//			else
-			$template = $remote->getblocktemplate('{}');
-                        $template = $remote->getblocktemplate('{"rules":["segwit"]}');
+        // Change for segwit
+        if ($coin->usesegwit) {
+            $template = $remote->getblocktemplate('{"rules":["segwit"]}');
+        } else {
+            $template = $remote->getblocktemplate('{}');
+        }
+        // Change for segwit end
 
+		if($template && isset($template['coinbasevalue']))
+		{
+			$coin->reward = $template['coinbasevalue']/100000000*$coin->reward_mul;
+
+			if($coin->symbol == 'TAC' && isset($template['_V2']))
+				$coin->charity_amount = $template['_V2']/100000000;
+
+			if(isset($template['payee_amount']) && $coin->symbol != 'LIMX') 
+			{
+				$coin->charity_amount = doubleval($template['payee_amount'])/100000000;
+				$coin->reward -= $coin->charity_amount;
+			}
+
+			else if(isset($template['masternode']) && arraySafeVal($template,'masternode_payments_enforced')) 
+			{
+				if (arraySafeVal($template,'masternode_payments_started'))
+				$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
+				$coin->hasmasternodes = true;
+			}
+
+			else if($coin->symbol == 'XZC') 
+			{
+				// coinbasevalue here is the amount available for miners, not the full block amount
+				$coin->reward = arraySafeVal($template,'coinbasevalue')/100000000 * $coin->reward_mul;
+				$coin->charity_amount = $coin->reward * $coin->charity_percent / 100;
+			}
+				
+			else if($coin->symbol == 'BNODE') 
+			{
+                   if(isset($template['masternode'])) 
+				{
+					if (arraySafeVal($template,'masternode_payments_started'))
+					$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
+				}
+				if(isset($template['evolution'])) 
+				{
+					$coin->reward -= arraySafeVal($template['evolution'],'amount',10000000)/100000000;
+				}
+           	}
+				
+			else if($coin->symbol == 'BCRS') 
+			{
+				if(isset($template['masternode'])) 
+				{
+					if (arraySafeVal($template,'masternode_payments_started'))
+					$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
+				}
+				
+				if(isset($template['fundreward'])) 
+				{
+					$coin->reward -= arraySafeVal($template['fundreward'],'amount',0)/100000000;
+				}
+			}				
+
+			else if($coin->symbol == 'IOTS') 
+			{
+				if(isset($template['masternode'])) 
+				{
+					if (arraySafeVal($template,'masternode_payments_started'))
+					$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
+				}
+			}				
+			
+			else if(!empty($coin->charity_address)) 
+			{
+				if(!$coin->charity_amount)
+				$coin->reward -= $coin->reward * $coin->charity_percent / 100;
+			}
+
+			if(isset($template['bits']))
+			{
+				$target = decode_compact($template['bits']);
+				$coin->difficulty = target_to_diff($target);
+			}
+		}
+
+		else if ($coin->rpcencoding == 'GETH' || $coin->rpcencoding == 'NIRO')
+		{
+			$coin->auto_ready = ($coin->connections > 0);
+		}
+
+		else if(strcasecmp($remote->error, 'method not found') == 0)
+		{
+			$template = $remote->getmemorypool();
 			if($template && isset($template['coinbasevalue']))
 			{
+				$coin->usememorypool = true;
 				$coin->reward = $template['coinbasevalue']/100000000*$coin->reward_mul;
-
-				if($coin->symbol == 'TAC' && isset($template['_V2']))
-					$coin->charity_amount = $template['_V2']/100000000;
-
-				if(isset($template['payee_amount']) && $coin->symbol != 'LIMX') {
-					$coin->charity_amount = doubleval($template['payee_amount'])/100000000;
-					$coin->reward -= $coin->charity_amount;
-				}
-
-				else if(isset($template['masternode']) && arraySafeVal($template,'masternode_payments_enforced')) {
-					if (arraySafeVal($template,'masternode_payments_started'))
-						$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
-					$coin->hasmasternodes = true;
-				}
-
-				else if($coin->symbol == 'XZC') {
-					// coinbasevalue here is the amount available for miners, not the full block amount
-					$coin->reward = arraySafeVal($template,'coinbasevalue')/100000000 * $coin->reward_mul;
-					$coin->charity_amount = $coin->reward * $coin->charity_percent / 100;
-				}
-				
-				else if($coin->symbol == 'BNODE') 
-				{
-                    if(isset($template['masternode'])) 
-					{
-						if (arraySafeVal($template,'masternode_payments_started'))
-						$coin->reward -= arraySafeVal($template['masternode'],'amount',0)/100000000;
-					}
-					if(isset($template['evolution'])) 
-					{
-						$coin->reward -= arraySafeVal($template['evolution'],'amount',10000000)/100000000;
-					}
-           		}
-				
-				else if(!empty($coin->charity_address)) {
-					if(!$coin->charity_amount)
-						$coin->reward -= $coin->reward * $coin->charity_percent / 100;
-				}
 
 				if(isset($template['bits']))
 				{
 					$target = decode_compact($template['bits']);
 					$coin->difficulty = target_to_diff($target);
 				}
-			}
-
-			else if ($coin->rpcencoding == 'GETH' || $coin->rpcencoding == 'NIRO')
+			} 
+			else 
 			{
-				$coin->auto_ready = ($coin->connections > 0);
+				$coin->auto_ready = false;
+				$coin->errors = $remote->error;
 			}
-
-			else if(strcasecmp($remote->error, 'method not found') == 0)
-			{
-				$template = $remote->getmemorypool();
-				if($template && isset($template['coinbasevalue']))
-				{
-					$coin->usememorypool = true;
-					$coin->reward = $template['coinbasevalue']/100000000*$coin->reward_mul;
-
-					if(isset($template['bits']))
-					{
-						$target = decode_compact($template['bits']);
-						$coin->difficulty = target_to_diff($target);
-					}
-				} else {
-					$coin->auto_ready = false;
-					$coin->errors = $remote->error;
-				}
-			}
+		}
 
 			else if ($coin->symbol == 'ZEC' || $coin->rpcencoding == 'ZEC')
 			{

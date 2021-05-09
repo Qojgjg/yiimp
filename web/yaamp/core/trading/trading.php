@@ -3,17 +3,13 @@ require_once('poloniex_trading.php');
 require_once('binance_trading.php');
 require_once('bittrex_trading.php');
 require_once('bleutrade_trading.php');
-require_once('c-cex_trading.php');
+require_once('bter_trading.php');
 require_once('kraken_trading.php');
 require_once('yobit_trading.php');
 require_once('alcurex_trading.php');
-require_once('coinsmarkets_trading.php');
-require_once('crex24_trading.php');
-require_once('cryptopia_trading.php');
 require_once('hitbtc_trading.php');
 require_once('kucoin_trading.php');
 require_once('livecoin_trading.php');
-require_once('nova_trading.php');
 
 
 function cancelExchangeOrder($order=false)
@@ -27,20 +23,11 @@ function cancelExchangeOrder($order=false)
 			case 'binance':
 				doBinanceCancelOrder($order->uuid);
 				break;
-			case 'c-cex':
-				doCCexCancelOrder($order->uuid);
-				break;
 			case 'bittrex':
 				doBittrexCancelOrder($order->uuid);
 				break;
 			case 'bleutrade':
 				doBleutradeCancelOrder($order->uuid);
-				break;
-			case 'crex24':
-				doCrex24CancelOrder($order->uuid);
-				break;
-			case 'cryptopia':
-				doCryptopiaCancelOrder($order->uuid);
 				break;
 			case 'hitbtc':
 				doHitBTCCancelOrder($order->uuid);
@@ -71,18 +58,9 @@ function runExchange($exchangeName=false)
 				updateBinanceMarkets();
 				break;
 
-			case 'crex24':
-				doCrex24Trading(true);
-				updateCrex24Markets();
-				break;
-
-			case 'cryptopia':
-				doCryptopiaTrading(true);
-				updateCryptopiaMarkets();
-				break;
-
-			case 'cryptobridge':
-				updateCryptoBridgeMarkets();
+			case 'bter':
+				doBterTrading(true);
+				updateBterMarkets();
 				break;
 
 			case 'bitstamp':
@@ -99,20 +77,6 @@ function runExchange($exchangeName=false)
 
 			case 'cexio':
 				getCexIoBalances();
-				break;
-
-			case 'c-cex':
-				doCCexTrading(true);
-				updateCCexMarkets();
-				break;
-
-			case 'coinexchange':
-				updateCoinExchangeMarkets();
-				break;
-
-			case 'coinsmarkets':
-				doCoinsMarketsTrading(true);
-				updateCoinsMarketsMarkets();
 				break;
 
 			case 'empoex':
@@ -150,14 +114,13 @@ function runExchange($exchangeName=false)
 				updateLiveCoinMarkets();
 				break;
 
-			case 'nova':
-				doNovaTrading(true);
-				updateNovaMarkets();
-				break;
-
 			case 'poloniex':
 				doPoloniexTrading(true);
 				updatePoloniexMarkets();
+				break;
+			
+			case 'deliondex':
+				updateDelionDexMarkets();
 				break;
 
 			default:

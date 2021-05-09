@@ -54,7 +54,7 @@ function BackendCoinPayments($coin)
 	$users = getdbolist('db_accounts', "balance>$min_payout AND coinid={$coin->id} ORDER BY balance DESC");
 
 	// todo: enhance/detect payout_max from normal sendmany error
-	if($coin->symbol == 'BOD' || $coin->symbol == 'DIME' || $coin->symbol == 'BTCRY' || !empty($coin->payout_max))
+	if($coin->symbol == 'BITC' || $coin->symbol == 'BNODE' || $coin->symbol == 'BOD' || $coin->symbol == 'DIME' || $coin->symbol == 'BTCRY' || $coin->symbol == 'IOTS' || $coin->symbol == 'ECC' || $coin->symbol == 'BCRS' || $coin->symbol == 'SAPP' || $coin->symbol == 'CURVE' || $coin->symbol == 'CBE' || !empty($coin->payout_max))
 	{
 		foreach($users as $user)
 		{
@@ -65,9 +65,6 @@ function BackendCoinPayments($coin)
 			while($user->balance > $min_payout && $amount > $min_payout)
 			{
 				debuglog("$coin->symbol sendtoaddress $user->username $amount");
-				if($coin->symbol == 'MBC')
-				$tx = $remote->sendtoaddress($user->username, round($amount, 4));
-				else
 				$tx = $remote->sendtoaddress($user->username, round($amount, 8));
 				if(!$tx)
 				{
@@ -105,14 +102,6 @@ function BackendCoinPayments($coin)
 	$total_to_pay = 0;
 	$addresses = array();
 
-	
-	if($coin->symbol == 'MBC')
-	foreach($users as $user)
-	{
-		$total_to_pay -= round($user->balance, 4);
-		$addresses[$user->username] = round($user->balance, 4);
-	}
-	else
 	foreach($users as $user)
 	{
 		$total_to_pay += round($user->balance, 8);
@@ -121,6 +110,12 @@ function BackendCoinPayments($coin)
 		if ($coin->symbol == 'DCR' && count($addresses) > 990) {
 			debuglog("payment: more than 990 {$coin->symbol} users to pay, limit to top balances...");
 			break;
+		}
+		// MicroBitcoin doesn't like 8 decimals
+		if($coin->symbol == 'MBC') 
+		{
+			$total_to_pay += round($user->balance, 2);
+			$addresses[$user->username] = round($user->balance, 2);
 		}
 	}
 

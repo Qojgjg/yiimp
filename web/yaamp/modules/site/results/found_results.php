@@ -9,14 +9,17 @@ function WriteBoxHeader($title)
 
 $showrental = (bool) YAAMP_RENTAL;
 
+// Ability to pass ?algo=all or ?algo=x16s,neoscrypt from URL
 $algo_from_query_param = getparam('algo');
- if($algo_from_query_param) {
+
+if($algo_from_query_param) {
 	// Query param is set
 	if($algo_from_query_param != 'all') {
 		$r_algo = array_map('trim', explode(',', $algo_from_query_param));
 		$r_algo = preg_replace('/[^A-Za-z0-9\-]/', '', $r_algo);
 	}
- } else {
+
+} else {
 	// Filter out algo from user's preferences
 	$algo_from_user_pref = user()->getState('yaamp-algo');
 	if($algo_from_user_pref != 'all') {
@@ -49,6 +52,7 @@ span.block.orphan    { color: white; background-color: #d9534f; }
 span.block.immature  { color: white; background-color: #f0ad4e; }
 span.block.confirmed { color: white; background-color: #5cb85c; }
 span.solo	{ padding: 2px; display: inline-block; text-align: center; min-width: 15px; border-radius: 3px; color: white; background-color: #48D8D8; }
+
 b.row a { font-size: 10pt; }
 .ssrow td.row { font-size: .8em; }
 td.right { text-align: right; }
@@ -86,13 +90,6 @@ foreach($db_blocks as $db_block)
 		echo '<td class="row right"></td>';
 		echo '<td class="row right"></td>';
 		echo '<td class="row right">'.$d.' ago</td>';
-
-		echo '<td class="row right">';
-		if($db_block->solo == '1')
-		echo '<span class="solo">solo</span>';
-		else echo '<span></span>';
-		echo "</td>";
-
 		echo '<td class="row right">';
 		echo '<span class="block confirmed">Confirmed</span>';
 		echo '</td>';
@@ -117,8 +114,14 @@ foreach($db_blocks as $db_block)
 	echo '<td class="row right" title="found '.$db_block->difficulty_user.'">'.$difficulty.'</td>';
 	echo '<td class="row right">'.$height.'</td>';
 	echo '<td class="row right">'.$d.' ago</td>';
+	
 	echo '<td class="row right">';
-
+	if($db_block->solo == '1') 
+		echo '<span class="solo" title="Block was found by solo miner">solo</span>';
+	else echo '<span></span>';
+	echo "</td>";
+	
+	echo '<td class="row right">';
 	if($db_block->category == 'orphan')
 		echo '<span class="block orphan">Orphan</span>';
 
@@ -128,7 +131,8 @@ foreach($db_blocks as $db_block)
 			$t = (int) ($coin->mature_blocks - $db_block->confirmations) * $coin->block_time;
 			$eta = "ETA: ".sprintf('%dh %02dmn', ($t/3600), ($t/60)%60);
 		}
-		echo '<span class="block immature" title="'.$eta.'">Immature ('.$db_block->confirmations.')</span>';
+		if($coin->mature_blocks == NULL) echo '<span class="block immature" title="'.$eta.'">Immature ('.$db_block->confirmations.')</span>';
+		else echo '<span class="block immature" title="'.$eta.'">Immature ('.$db_block->confirmations.'/'.$coin->mature_blocks.')</span>';
 	}
 	else if($db_block->category == 'generate')
 		echo '<span class="block confirmed">Confirmed</span>';

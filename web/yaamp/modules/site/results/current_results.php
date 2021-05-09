@@ -20,11 +20,11 @@ echo <<<END
 <th data-sorter="numeric" align="center">Miners<br/>Share/Solo</th>
 <th data-sorter="numeric" align="center">Pool HashRate</th>
 <th data-sorter="numeric" align="center">Network Hashrate</th>
-<th data-sorter="currency" align="center">Fees**</th>
+<th data-sorter="currency" align="center">Fees<br/>Share/Solo</th>
 <!--<th data-sorter="currency" class="estimate" align="right">Current<br />Estimate</th>-->
 <!--<th data-sorter="currency" >Norm</th>-->
 <!--<th data-sorter="currency" class="estimate" align="right">24 Hours<br />Estimated</th>-->
-<th data-sorter="currency"align="center">24 Hours<br />Actual***</th>
+<th data-sorter="currency"align="center">24 Hours<br />Actual</th>
 </tr>
 </thead>
 END;
@@ -165,17 +165,33 @@ foreach ($algos as $item)
             if ($dontsell == 1) echo "<td align='center' valign='top' style='font-size: .8em;'><img width=13 src='/images/cancel.png'></td>";
             else echo "<td align='center' valign='top' style='font-size: .8em;'><img width=13 src='/images/ok.png'></td>";
 
-            if ($port_count == 1) echo "<td align='center' style='font-size: .8em;'><b>" . $port_db->port . "</b></td>";
-            else echo "<td align='center' style='font-size: .8em;'><b>$port</b></td>";
-
-	    echo "<td align='center' style='font-size: .8em;'>$symbol</td>";
-	    echo "<td align='center' style='font-size: .8em;'>$workers / $solo_workers</td>";
-
-            $pool_hash = yaamp_coin_rate($coin->id);
+            if ($port_count == 1) 
+				echo "<td align='center' style='font-size: .8em;'><b>".$port_db->port."</b></td>";
+			else 
+				echo "<td align='center' style='font-size: .8em;'><b>$port</b></td>";
+            
+            echo "<td align='center' style='font-size: .8em;'>$symbol</td>";
+            
+            $workers_coins = getdbocount('db_workers', "algo=:algo and pid=:pid and not password like '%m=solo%'", array(
+                ':algo' => $algo,
+                ':pid' => $port_db->pid
+            ));
+            $solo_workers_coins = getdbocount('db_workers', "algo=:algo and pid=:pid and password like '%m=solo%'", array(
+                ':algo' => $algo,
+                ':pid' => $port_db->pid
+            ));
+			if ($port_count == 1) 
+				echo "<td align='center' style='font-size: .8em;'>$workers_coins / $solo_workers_coins</td>";
+			else
+				echo "<td align='center' style='font-size: .8em;'>$workers / $solo_workers</td>";
+			
+			$pool_hash = yaamp_coin_rate($coin->id);
             $pool_hash_sfx = $pool_hash ? Itoa2($pool_hash) . 'h/s' : '';
             echo "<td align='center' style='font-size: .8em;'>$pool_hash_sfx</td>";
-            $pool_hash_sfx = $pool_hash ? Itoa2($pool_hash) . 'h/s' : '';
+            
+			$pool_hash_sfx = $pool_hash ? Itoa2($pool_hash) . 'h/s' : '';
             $min_ttf = $coin->network_ttf > 0 ? min($coin->actual_ttf, $coin->network_ttf) : $coin->actual_ttf;
+
             $network_hash = controller()
                 ->memcache
                 ->get("yiimp-nethashrate-{$coin->symbol}");
@@ -197,15 +213,14 @@ foreach ($algos as $item)
                         ->memcache
                         ->set("yiimp-nethashrate-{$coin->symbol}", $network_hash, 60);
                 }
-		else if($remote->getnetworkhashps())
-		{
-            	    $network_hash = $remote->getnetworkhashps();
-            	    controller()->memcache->set("yiimp-nethashrate-{$coin->symbol}", $network_hash, 60);
-		}
+				else
+				{
+					$network_hash = $coin->difficulty * 0x100000000 / ($min_ttf? $min_ttf: 60);
+				}
             }
             $network_hash = $network_hash ? Itoa2($network_hash) . 'h/s' : '';
             echo "<td align='center' style='font-size: .8em;' data='$pool_hash'>$network_hash</td>";
-            echo "<td align='center' style='font-size: .8em;'>{$fees}%</td>";
+            echo "<td align='center' style='font-size: .8em;'>{$fees}% / {$fees_solo}%</td>";
             $btcmhd = yaamp_profitability($coin);
             $btcmhd = mbitcoinvaluetoa($btcmhd);
             echo "<td align='center' style='font-size: .8em;'>$btcmhd</td>";
@@ -215,7 +230,8 @@ foreach ($algos as $item)
 
     $total_coins += $coins;
     $total_miners += $workers;
-    $total_solo += $solo_workers;
+	$total_solo += $solo_workers;
+	
 }
 
 echo "</tbody>";

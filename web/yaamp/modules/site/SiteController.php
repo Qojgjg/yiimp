@@ -8,7 +8,7 @@ class SiteController extends CommonController
 	// Security Note: You can rename this action as you
 	// want, to customize the admin entrance url...
 	//
-	public function actionAdminRights()
+	public function actionmyadmin()
 	{
 		$client_ip = arraySafeVal($_SERVER,'REMOTE_ADDR');
 		$valid = isAdminIP($client_ip);
@@ -503,6 +503,11 @@ class SiteController extends CommonController
 		$this->renderPartial('results/user_earning_results');
 	}
 
+	public function actionWallet_found_results()
+	{
+		$this->renderPartial('results/wallet_found_results');
+	}
+
 	public function actionGraph_user_results()
 	{
 		$this->renderPartial('results/graph_user_results');
@@ -599,6 +604,7 @@ class SiteController extends CommonController
 	public function actionBlock()
 	{
 		$this->render('block');
+		
 	}
 
 	public function actionBlock_results()

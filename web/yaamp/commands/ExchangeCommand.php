@@ -153,32 +153,12 @@ class ExchangeCommand extends CConsoleCommand
 			if (!is_object($balance)) echo "bleutrade error\n";
 			else echo("bleutrade btc: ".json_encode($balance->result)."\n");
 		}
-		if (!empty(EXCH_CCEX_KEY)) {
-			$ccex = new CcexAPI;
-			$balances = $ccex->getBalances();
-			if(!$balances || !isset($balances['result'])) {
-				// older api
-				$balances = $ccex->getBalance();
-				if(!$balances || !isset($balances['return'])) echo "error\n";
-				else echo("c-cex btc: ".json_encode($balances['return'][1])."\n");
-			}
-			else echo("c-cex btc: ".json_encode($balances['result'][1])."\n");
+		if (!empty(EXCH_BTER_KEY)) {
+			$info = bter_api_user('getfunds');
+			if (!$info || arraySafeVal($info,'result') != 'true' || !isset($info['available_funds'])) echo "bter error\n";
+			else echo("bter available: ".json_encode($info['available_funds'])."\n");
 		}
-		if (!empty(EXCH_COINMARKETS_USER)) {
-			$balances = coinsmarkets_api_user('gettradinginfo');
-			if (!is_array($balances)) echo "coinsmarkets error ".json_encode($balances)."\n";
-			else echo("coinsmarkets: ".json_encode($balances['return'])."\n");
-		}
-		if (!empty(EXCH_CREX24_KEY)) {
-			$balance = crex24_api_user('account/balance',array('currency'=>'BTC'));
-			if (!is_array($balance)) echo "crex24 error ".json_encode($balance)."\n";
-			else echo("crex24: ".json_encode($balance)."\n");
-		}
-		if (!empty(EXCH_CRYPTOPIA_KEY)) {
-			$balance = cryptopia_api_user('GetBalance',array("Currency"=>"BTC"));
-			if (!is_object($balance)) echo("cryptopia error ".json_encode($balance)."\n");
-			else echo("cryptopia btc: ".json_encode($balance->Data)."\n");
-		}
+
 		if (!empty(EXCH_HITBTC_KEY)) {
 			$data = hitbtc_api_user('trading/balance');
 			if (!is_object($data) || !isset($data->balance)) echo("hitbtc error ".json_encode($data)."\n");
@@ -191,8 +171,8 @@ class ExchangeCommand extends CConsoleCommand
 			$balance = kraken_api_user('Balance');
 			echo("kraken btc: ".json_encode($balance)."\n");
 		}
-		if (!empty(EXCH_KUCOIN_KEY) && !empty(EXCH_KUCOIN_PASSPHRASE)) {
-			$balance = kucoin_api_user('accounts',array('currency'=>'BTC'));
+		if (!empty(EXCH_KUCOIN_KEY)) {
+			$balance = kucoin_api_user('account/BTC/balance');
 			if (!is_object($balance) || !isset($balance->data)) echo "kucoin error ".json_encode($balance)."\n";
 			else echo("kucoin: ".json_encode($balance->data)."\n");
 		}
@@ -203,11 +183,7 @@ class ExchangeCommand extends CConsoleCommand
 			else echo("livecoin btc: ".json_encode($balance)."\n");
 			// {"type":"available","currency":"BTC","value":0}
 		}
-		if (!empty(EXCH_NOVA_KEY)) {
-			$info = nova_api_user('getbalances');
-			if (objSafeVal($info,'status','') != 'success' || !is_array($info->balances)) echo "nova error\n";
-			else echo("nova btc: ".json_encode($info->balances[0])."\n");
-		}
+
 		if(!empty(EXCH_POLONIEX_KEY)) {
 			$poloniex = new poloniex;
 			$balance = $poloniex->get_available_balances();

@@ -15,8 +15,8 @@ echo <<<END
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-<meta name="description" content="Mining Pool">
-<meta name="keywords" content="mining,pool,official,yiimp,anonymous,mining,pool,maxcoin,bitcoin,altcoin,auto,switch,exchange,profit">
+<meta name="description" content="Yii mining pools for alternative crypto currencies">
+<meta name="keywords" content="anonymous,mining,pool,maxcoin,bitcoin,altcoin,auto,switch,exchange,profit,decred,scrypt,x11,x13,x14,x15,lbry,lyra2re,neoscrypt,sha256,quark,skein2">
 
 END;
 
@@ -94,6 +94,7 @@ function showPageHeader()
 	showItemHeader(controller()->id=='site'&&($action=='index' || $action=='wallet') && $ad, "/?address=$wallet", 'Wallet');
 	showItemHeader(controller()->id=='stats', '/stats', 'Graphs');
 	showItemHeader($action=='miners', '/site/miners', 'Miners');
+	showItemHeader(controller()->id=='api', '/site/api', 'API');
 	if (YIIMP_PUBLIC_EXPLORER)
 		showItemHeader(controller()->id=='explorer', '/explorer', 'Explorers');
 
@@ -126,15 +127,10 @@ function showPageHeader()
 
 	$mining = getdbosql('db_mining');
 	$nextpayment = date('H:i T', $mining->last_payout+YAAMP_PAYMENTS_FREQ);
-	// $nextpayment = date('H:i', $mining->last_payout+YAAMP_PAYMENTS_FREQ) . ' UTC (US)';
-	// define('UTCEUR', 7200);
-	// $nextpaymentEUR = date('H:i', $mining->last_payout+YAAMP_PAYMENTS_FREQ+UTCEUR); // . ' UTC+2 (EUR)';
 	$eta = ($mining->last_payout+YAAMP_PAYMENTS_FREQ) - time();
 	$eta_mn = 'in '.round($eta / 60).' minutes';
 
-	echo '<span id="nextpayout" style="font-size: .8em;" title="'.$nextpayment.'">Next Payout: '.$eta_mn.'</span>';
-	// echo '<span id="nextpayout" style="font-size: .8em;" title="'.$eta_mn.'">Next Payout: '.$nextpayment.' / '.$nextpaymentEUR.'</span>';
-	// echo '<span id="nextpayout" style="font-size: .8em;" title="'.$eta_mn.'">Next Payout: '.$nextpayment.' UTC (US) / '.$nextpaymentEUR.' UTC+2 (EUR)</span>';
+	echo '<span id="nextpayout" style="font-size: .8em;" title="'.$eta_mn.'">Next Payout: '.$nextpayment.'</span>';
 
 	echo "</div>";
 	echo "</div>";
@@ -146,7 +142,9 @@ function showPageFooter()
 	$year = date("Y", time());
 
 	echo "<p>&copy; $year ".YAAMP_SITE_NAME.' - '.
-		'<a href="/">Mining Pool</a></p>';
+		'<a href="https://github.com/Kudaraidee/yiimp">Open source Project</a></p>';
 
 	echo '</div><!-- footer -->';
 }
+
+

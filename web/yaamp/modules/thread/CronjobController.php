@@ -41,7 +41,7 @@ class CronjobController extends CommonController
 
 	public function actionRunBlocks()
 	{
-//		screenlog(__FUNCTION__);
+		// debuglog(__METHOD__);
 		set_time_limit(0);
 
 		$this->monitorApache();
@@ -49,21 +49,24 @@ class CronjobController extends CommonController
 		$last_complete = memcache_get($this->memcache->memcache, "cronjob_block_time_start");
 		if($last_complete+(5*60) < time())
 			dborun("update jobs set active=false");
+		
 		BackendBlockFind1();
+		
 		if(!memcache_get($this->memcache->memcache, 'balances_locked')) {
 			BackendClearEarnings();
 		}
+		
 		BackendRentingUpdate();
 		BackendProcessList();
 		BackendBlocksUpdate();
 
 		memcache_set($this->memcache->memcache, "cronjob_block_time_start", time());
-//		screenlog(__FUNCTION__.' done');
+		// debuglog(__METHOD__ . " END");
 	}
 
 	public function actionRunLoop2()
 	{
-//		screenlog(__FUNCTION__);
+		// debuglog(__METHOD__);
 		set_time_limit(0);
 
 		$this->monitorApache();
@@ -129,8 +132,6 @@ class CronjobController extends CommonController
 				getBitstampBalances();
 				getCexIoBalances();
 				doBittrexTrading();
-				doCrex24Trading();
-				doCryptopiaTrading();
 				doKrakenTrading();
 				doLiveCoinTrading();
 				doPoloniexTrading();
@@ -140,12 +141,10 @@ class CronjobController extends CommonController
 				if(!YAAMP_PRODUCTION) break;
 
 				doBinanceTrading();
-				doCCexTrading();
+				doBterTrading();
 				doBleutradeTrading();
 				doKuCoinTrading();
-				doNovaTrading();
 				doYobitTrading();
-				doCoinsMarketsTrading();
 				break;
 
 			case 3:
@@ -198,9 +197,9 @@ class CronjobController extends CommonController
 		$mining->last_payout = time();
 		$mining->save();
 
-//		memcache_set($this->memcache->memcache, 'apache_locked', true);
-//		if(YAAMP_USE_NGINX)
-//			system("service nginx stop");
+		memcache_set($this->memcache->memcache, 'apache_locked', true);
+		if(YAAMP_USE_NGINX)
+			system("service nginx stop");
 
 		sleep(10);
 		BackendDoBackup();
