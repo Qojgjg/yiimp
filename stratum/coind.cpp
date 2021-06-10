@@ -115,7 +115,7 @@ bool coind_validate_address(YAAMP_COIND *coind)
 	sprintf(params, "[\"%s\"]", coind->wallet);
 
 	json_value *json;
-    bool getaddressinfo = ((strcmp(coind->symbol,"DGB") == 0) || (strcmp(coind->symbol2, "DGB") == 0) || (strcmp(coind->symbol,"MAZ") == 0) || (strcmp(coind->symbol2, "MAZ") == 0) || (strcmp(coind->symbol,"MRD") == 0) || (strcmp(coind->symbol2, "MRD") == 0) || (strcmp(coind->symbol,"GLNC") == 0) || (strcmp(coind->symbol2, "GLNC") == 0) || (strcmp(coind->symbol,"TIP") == 0) || (strcmp(coind->symbol2, "TIP") == 0) || (strcmp(coind->symbol,"PICOIN") == 0) || (strcmp(coind->symbol2, "PICOIN") == 0) || (strcmp(coind->symbol,"VVC") == 0) || (strcmp(coind->symbol2, "VVC") == 0) || (strcmp(coind->symbol,"PIC") == 0) || (strcmp(coind->symbol2, "PIC") == 0) || (strcmp(coind->symbol,"BNS") == 0) || (strcmp(coind->symbol2, "BNS") == 0) || (strcmp(coind->symbol,"WDC") == 0) || (strcmp(coind->symbol2, "WDC") == 0) || (strcmp(coind->symbol,"BCR") == 0) || (strcmp(coind->symbol2, "BCR") == 0) || (strcmp(coind->symbol,"WCN") == 0) || (strcmp(coind->symbol2, "WCN") == 0) || (strcmp(coind->symbol,"HUSTL") == 0) || (strcmp(coind->symbol2, "HUSTL") == 0) || (strcmp(coind->symbol,"DSV") == 0) || (strcmp(coind->symbol2, "DSV") == 0) || (strcmp(coind->symbol,"CATY") == 0) || (strcmp(coind->symbol2, "CATY") == 0) || (strcmp(coind->symbol,"CTC") == 0) || (strcmp(coind->symbol2, "CTC") == 0) || (strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0) || (strcmp(coind->symbol,"FAKE") == 0) || (strcmp(coind->symbol2, "FAKE") == 0) || (strcmp(coind->symbol,"XMY") == 0) || (strcmp(coind->symbol2, "XMY") == 0) || (strcmp(coind->symbol,"SCHO") == 0) || (strcmp(coind->symbol2, "SCHO") == 0) || (strcmp(coind->symbol,"BCC") == 0) || (strcmp(coind->symbol2, "BCC") == 0) || (strcmp(coind->symbol,"BTC") == 0) || (strcmp(coind->symbol2, "BTC") == 0));	
+    bool getaddressinfo = ((strcmp(coind->symbol,"DGB") == 0) || (strcmp(coind->symbol2, "DGB") == 0) || (strcmp(coind->symbol,"SFC") == 0) || (strcmp(coind->symbol2, "SFC") == 0) || (strcmp(coind->symbol,"MAZ") == 0) || (strcmp(coind->symbol2, "MAZ") == 0) || (strcmp(coind->symbol,"MRD") == 0) || (strcmp(coind->symbol2, "MRD") == 0) || (strcmp(coind->symbol,"GLNC") == 0) || (strcmp(coind->symbol2, "GLNC") == 0) || (strcmp(coind->symbol,"TIP") == 0) || (strcmp(coind->symbol2, "TIP") == 0) || (strcmp(coind->symbol,"PICOIN") == 0) || (strcmp(coind->symbol2, "PICOIN") == 0) || (strcmp(coind->symbol,"VVC") == 0) || (strcmp(coind->symbol2, "VVC") == 0) || (strcmp(coind->symbol,"PIC") == 0) || (strcmp(coind->symbol2, "PIC") == 0) || (strcmp(coind->symbol,"BNS") == 0) || (strcmp(coind->symbol2, "BNS") == 0) || (strcmp(coind->symbol,"WDC") == 0) || (strcmp(coind->symbol2, "WDC") == 0) || (strcmp(coind->symbol,"BCR") == 0) || (strcmp(coind->symbol2, "BCR") == 0) || (strcmp(coind->symbol,"WCN") == 0) || (strcmp(coind->symbol2, "WCN") == 0) || (strcmp(coind->symbol,"HUSTL") == 0) || (strcmp(coind->symbol2, "HUSTL") == 0) || (strcmp(coind->symbol,"DSV") == 0) || (strcmp(coind->symbol2, "DSV") == 0) || (strcmp(coind->symbol,"CATY") == 0) || (strcmp(coind->symbol2, "CATY") == 0) || (strcmp(coind->symbol,"CTC") == 0) || (strcmp(coind->symbol2, "CTC") == 0) || (strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0) || (strcmp(coind->symbol,"FAKE") == 0) || (strcmp(coind->symbol2, "FAKE") == 0) || (strcmp(coind->symbol,"XMY") == 0) || (strcmp(coind->symbol2, "XMY") == 0) || (strcmp(coind->symbol,"SCHO") == 0) || (strcmp(coind->symbol2, "SCHO") == 0) || (strcmp(coind->symbol,"BCC") == 0) || (strcmp(coind->symbol2, "BCC") == 0) || (strcmp(coind->symbol,"BTC") == 0) || (strcmp(coind->symbol2, "BTC") == 0));	
 	if(getaddressinfo)
 		json = rpc_call(&coind->rpc, "getaddressinfo", params);
 	else
@@ -207,6 +207,14 @@ void coind_init(YAAMP_COIND *coind)
 	    bool is_wcn = ((strcmp(coind->symbol,"WCN") == 0) || (strcmp(coind->symbol2, "WCN") == 0));
 
     if (is_wcn) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_sfc = ((strcmp(coind->symbol,"SFC") == 0) || (strcmp(coind->symbol2, "SFC") == 0));
+
+    if (is_sfc) {
         if (json) json_value_free(json);
 
         json = rpc_call(&coind->rpc, "getnewaddress", params);
