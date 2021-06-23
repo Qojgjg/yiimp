@@ -120,10 +120,10 @@ void db_update_algos(YAAMP_DB *db)
 
 	if(g_current_algo->overflow)
 	{
-	//	debuglog("setting overflow\n");
-	//	g_current_algo->overflow = false;
+		debuglog("setting overflow\n");
+		g_current_algo->overflow = false;
 
-	//	db_query(db, "UPDATE algos SET overflow=true WHERE name='%s'", g_stratum_algo);
+		db_query(db, "UPDATE algos SET overflow=true WHERE name='%s'", g_stratum_algo);
 	}
 
 	char symbol[16] = "NULL\0";
