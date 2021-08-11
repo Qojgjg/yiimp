@@ -11,6 +11,7 @@ JavascriptFile('/yaamp/ui/js/auto_refresh.js');
 
 $height = '240px';
 
+$stratum_url = YAAMP_STRATUM_URL;
 $min_payout = floatval(YAAMP_PAYMENTS_MINI);
 $min_sunday = $min_payout/10;
 
@@ -67,10 +68,7 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 <tbody><tr>
 <td>
 <select id="drop-stratum" colspan="2" style="min-width: 140px">
-	<option value="mine.">US Stratum</option>
-	<option value="cdn.">CDN Stratum</option>
-	<option value="euro.">Euro Stratum</option>
-	<option value="uk.">UK Stratum</option>
+	<option value="">US Stratum</option>
 </select>
 </td>
 <td>
@@ -207,7 +205,7 @@ function getLastUpdated(){
 	var result = '';
 
 	result += drop2.options[drop2.selectedIndex].dataset.algo + ' -o stratum+tcp://';
-	result += drop1.value + 'miningcoins.ca:';
+	result += drop1.value + '<?= $stratum_url ?>:';
 	result += drop2.options[drop2.selectedIndex].dataset.port + ' -u ';
 	result += document.getElementById('text-wallet').value;
 	if (rigName) result += '.' + rigName;
