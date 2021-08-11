@@ -402,6 +402,8 @@ if ($coin->id) {
 				echo "maxconnections=12\n";
 				echo "daemon=1\n";
 				echo "gen=0\n";
+				echo "listen=1\n";
+				echo "server=1\n";
 				if(empty($coin->specifications)){
 				echo "\n";
 				}
