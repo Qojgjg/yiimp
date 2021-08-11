@@ -1,5 +1,5 @@
 
-var auto_delay = 60000;
+var auto_delay = 4000;
 var auto_max_time = 3600000;
 var auto_start_time = new Date().getTime();
 
