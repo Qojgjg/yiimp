@@ -72,10 +72,39 @@ $payout_freq = (YAAMP_PAYMENTS_FREQ / 3600)." hours";
 </select>
 </td>
 <td>
-<select id="drop-coin">
-<option data-port='7008' data-algo='-a x17' data-symbol='BTCIL'>BitcoinIL</option>
-</select>
-</td>
+			<select id="drop-coin" style="border-style:solid; padding: 3px; font-family: monospace; border-radius: 5px;">
+        <?php
+        $list = getdbolist('db_coins', "enable and visible and auto_ready order by algo asc");
+
+        $algoheading="";
+        $count=0;
+        foreach($list as $coin)
+        			{
+        			$name = substr($coin->name, 0, 18);
+        			$symbol = $coin->getOfficialSymbol();
+                  $id = $coin->id;
+                  $algo = $coin->algo;
+
+        $port_count = getdbocount('db_stratums', "algo=:algo and symbol=:symbol", array(
+        ':algo' => $algo,
+        ':symbol' => $symbol
+        ));
+
+        $port_db = getdbosql('db_stratums', "algo=:algo and symbol=:symbol", array(
+        ':algo' => $algo,
+        ':symbol' => $symbol
+        ));
+
+        if ($port_count >= 1){$port = $port_db->port;}else{$port = '0.0.0.0';}
+        if($count == 0){ echo "<option disabled=''>$algo";}elseif($algo != $algoheading){echo "<option disabled=''>$algo</option>";}
+        echo "<option data-port='$port' data-algo='-a $algo' data-symbol='$symbol'>$name ($symbol)</option>";
+
+        $count=$count+1;
+        $algoheading=$algo;
+        }
+        ?>
+			</select>
+		</td>
 <td>
 <input id="text-wallet" type="text" size="44" placeholder="RF9D1R3Vt7CECzvb1SawieUC9cYmAY1qoj">
 </td><td>
