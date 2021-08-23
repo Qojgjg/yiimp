@@ -217,6 +217,7 @@ void sha256_double_hash_hex(const char *input, char *output, unsigned int len);
 #include "algos/vitalium.h"
 #include "algos/aergo.h"
 #include "algos/hex.h"
+#include "algos/yespower/yespower.h"
 #include "algos/argon2d-dyn.h"
 #include "algos/exosis.h"
 #include "algos/x21s.h"

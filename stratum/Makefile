@@ -58,6 +58,7 @@ clean:
 	rm -f sha3/*.o
 	rm -f sha3/*.a
 	rm -f algos/ar2/*.o
+	rm -f algos/yespower/*.o
 
 install: clean all
 	strip -s stratum
