@@ -1,11 +1,4 @@
-#####################
-# Special credits to the following devs that make this YiiMP stratum possible
-# tpruvot https://github.com/tpruvot/yiimp
-# barrystyle https://github.com/barrystyle
-# Alexg Discord
-# Kudaraidee https://github.com/Kudaraidee/yiimp
-# And all the other devs that have helped with this project
-#####################
+
 CC=gcc
 
 CFLAGS= -g -march=native
@@ -65,8 +58,10 @@ clean:
 	rm -f sha3/*.o
 	rm -f sha3/*.a
 	rm -f algos/ar2/*.o
+	rm -f algos/yespower/*.o
 
 install: clean all
 	strip -s stratum
 	cp stratum /usr/local/bin/
 	cp stratum ../bin/
+

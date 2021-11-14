@@ -98,7 +98,7 @@ bool coind_validate_user_address(YAAMP_COIND *coind, char* const address)
 	}
 
 	bool isvalid = json_get_bool(json_result, "isvalid");
-	if(!isvalid) stratumlog("%s: %s user address %s is not valid.\n", g_stratum_algo, coind->symbol, address);
+	// if(!isvalid) stratumlog("%s: %s user address %s is not valid.\n", g_stratum_algo, coind->symbol, address);
 
 	json_value_free(json);
 
@@ -115,8 +115,11 @@ bool coind_validate_address(YAAMP_COIND *coind)
 	sprintf(params, "[\"%s\"]", coind->wallet);
 
 	json_value *json;
-	bool getaddressinfo = false;
-	json = rpc_call(&coind->rpc, "validateaddress", params);
+    bool getaddressinfo = ((strcmp(coind->symbol,"DGB") == 0) || (strcmp(coind->symbol2, "DGB") == 0) || (strcmp(coind->symbol,"DANE") == 0) || (strcmp(coind->symbol2, "DANE") == 0) || (strcmp(coind->symbol,"HCC") == 0) || (strcmp(coind->symbol2, "HCC") == 0) || (strcmp(coind->symbol,"ZTC") == 0) || (strcmp(coind->symbol2, "ZTC") == 0) || (strcmp(coind->symbol,"MAZ") == 0) || (strcmp(coind->symbol2, "MAZ") == 0) || (strcmp(coind->symbol,"MRD") == 0) || (strcmp(coind->symbol2, "MRD") == 0) || (strcmp(coind->symbol,"GLNC") == 0) || (strcmp(coind->symbol2, "GLNC") == 0) || (strcmp(coind->symbol,"TIP") == 0) || (strcmp(coind->symbol2, "TIP") == 0) || (strcmp(coind->symbol,"PICOIN") == 0) || (strcmp(coind->symbol2, "PICOIN") == 0) || (strcmp(coind->symbol,"VVC") == 0) || (strcmp(coind->symbol2, "VVC") == 0) || (strcmp(coind->symbol,"CDU") == 0) || (strcmp(coind->symbol2, "CDU") == 0) || (strcmp(coind->symbol,"BEX") == 0) || (strcmp(coind->symbol2, "BEX") == 0) || (strcmp(coind->symbol,"EAC") == 0) || (strcmp(coind->symbol2, "EAC") == 0) || (strcmp(coind->symbol,"MERICA") == 0) || (strcmp(coind->symbol2, "MERICA") == 0) || (strcmp(coind->symbol,"BIENN") == 0) || (strcmp(coind->symbol2, "BIENN") == 0) || (strcmp(coind->symbol,"SKO") == 0) || (strcmp(coind->symbol2, "SKO") == 0) || (strcmp(coind->symbol,"PIC") == 0) || (strcmp(coind->symbol2, "PIC") == 0) || (strcmp(coind->symbol,"FUELX") == 0) || (strcmp(coind->symbol2, "FUELX") == 0) || (strcmp(coind->symbol,"MIND") == 0) || (strcmp(coind->symbol2, "MIND") == 0) || (strcmp(coind->symbol,"BNS") == 0) || (strcmp(coind->symbol2, "BNS") == 0) || (strcmp(coind->symbol,"LTC") == 0) || (strcmp(coind->symbol2, "LTC") == 0) || (strcmp(coind->symbol,"UCD") == 0) || (strcmp(coind->symbol2, "UCD") == 0) || (strcmp(coind->symbol,"WDC") == 0) || (strcmp(coind->symbol2, "WDC") == 0) || (strcmp(coind->symbol,"BCR") == 0) || (strcmp(coind->symbol2, "BCR") == 0) || (strcmp(coind->symbol,"BCH") == 0) || (strcmp(coind->symbol2, "BCH") == 0) || (strcmp(coind->symbol,"WCN") == 0) || (strcmp(coind->symbol2, "WCN") == 0) || (strcmp(coind->symbol,"HUSTL") == 0) || (strcmp(coind->symbol2, "HUSTL") == 0) || (strcmp(coind->symbol,"DSV") == 0) || (strcmp(coind->symbol2, "DSV") == 0) || (strcmp(coind->symbol,"CATY") == 0) || (strcmp(coind->symbol2, "CATY") == 0) || (strcmp(coind->symbol,"CED") == 0) || (strcmp(coind->symbol2, "CED") == 0) || (strcmp(coind->symbol,"BTK") == 0) || (strcmp(coind->symbol2, "BTK") == 0) || (strcmp(coind->symbol,"PLC") == 0) || (strcmp(coind->symbol2, "PLC") == 0) || (strcmp(coind->symbol,"CTC") == 0) || (strcmp(coind->symbol2, "CTC") == 0) || (strcmp(coind->symbol,"TDC") == 0) || (strcmp(coind->symbol2, "TDC") == 0) || (strcmp(coind->symbol,"MGC") == 0) || (strcmp(coind->symbol2, "MGC") == 0) || (strcmp(coind->symbol,"UC") == 0) || (strcmp(coind->symbol2, "UC") == 0) || (strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0) || (strcmp(coind->symbol,"VG") == 0) || (strcmp(coind->symbol2, "VG") == 0) || (strcmp(coind->symbol,"FAKE") == 0) || (strcmp(coind->symbol2, "FAKE") == 0) || (strcmp(coind->symbol,"DECO") == 0) || (strcmp(coind->symbol2, "DECO") == 0) || (strcmp(coind->symbol,"XMY") == 0) || (strcmp(coind->symbol2, "XMY") == 0) || (strcmp(coind->symbol,"SCHO") == 0) || (strcmp(coind->symbol2, "SCHO") == 0) || (strcmp(coind->symbol,"BCC") == 0) || (strcmp(coind->symbol2, "BCC") == 0) || (strcmp(coind->symbol,"BTC") == 0) || (strcmp(coind->symbol2, "BTC") == 0));	
+	if(getaddressinfo)
+		json = rpc_call(&coind->rpc, "getaddressinfo", params);
+	else
+		json = rpc_call(&coind->rpc, "validateaddress", params);
 	if(!json) return false;
 
 	json_value *json_result = json_get_object(json, "result");
@@ -124,20 +127,6 @@ bool coind_validate_address(YAAMP_COIND *coind)
 	{
 		json_value_free(json);
 		return false;
-	}
-
-	if(!json_get_bool(json_result, "ismine"))
-	{
-		stratumlog("%s wallet is using getaddressinfo.\n", coind->name);
-		getaddressinfo = true;
-		json = rpc_call(&coind->rpc, "getaddressinfo", params);
-
-		json_result = json_get_object(json, "result");
-		if(!json_result)
-		{
-			json_value_free(json);
-			return false;
-		}
 	}
 
 	bool isvalid = getaddressinfo || json_get_bool(json_result, "isvalid");
@@ -190,9 +179,9 @@ void coind_init(YAAMP_COIND *coind)
 	bool valid = coind_validate_address(coind);
 	if(valid) return;
 
-	sprintf(params, "[\"legacy\"]", account);
+	sprintf(params, "[\"%s\"]", account);
 
-	json_value *json = rpc_call(&coind->rpc, "getrawchangeaddress", params);
+	json_value *json = rpc_call(&coind->rpc, "getaccountaddress", params);
 	if(!json)
 	{
 		json = rpc_call(&coind->rpc, "getaddressesbyaccount", params);
@@ -207,6 +196,369 @@ void coind_init(YAAMP_COIND *coind)
 		}
 	}
 
+	    bool is_dgb = ((strcmp(coind->symbol,"DGB") == 0) || (strcmp(coind->symbol2, "DGB") == 0));
+
+    if (is_dgb) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	    bool is_wcn = ((strcmp(coind->symbol,"WCN") == 0) || (strcmp(coind->symbol2, "WCN") == 0));
+
+    if (is_wcn) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_bienn = ((strcmp(coind->symbol,"BIENN") == 0) || (strcmp(coind->symbol2, "BIENN") == 0));
+
+    if (is_bienn) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_mind = ((strcmp(coind->symbol,"MIND") == 0) || (strcmp(coind->symbol2, "MIND") == 0));
+
+    if (is_mind) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+
+	    bool is_plc = ((strcmp(coind->symbol,"PLC") == 0) || (strcmp(coind->symbol2, "PLC") == 0));
+
+    if (is_plc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_sko = ((strcmp(coind->symbol,"SKO") == 0) || (strcmp(coind->symbol2, "SKO") == 0));
+
+    if (is_sko) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_btk = ((strcmp(coind->symbol,"BTK") == 0) || (strcmp(coind->symbol2, "BTK") == 0));
+
+    if (is_btk) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_ucd = ((strcmp(coind->symbol,"UCD") == 0) || (strcmp(coind->symbol2, "UCD") == 0));
+
+    if (is_ucd) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_merica = ((strcmp(coind->symbol,"MERICA") == 0) || (strcmp(coind->symbol2, "MERICA") == 0));
+
+    if (is_merica) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_uc = ((strcmp(coind->symbol,"UC") == 0) || (strcmp(coind->symbol2, "UC") == 0));
+
+    if (is_uc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_mgc = ((strcmp(coind->symbol,"MGC") == 0) || (strcmp(coind->symbol2, "MGC") == 0));
+
+    if (is_mgc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+
+	    bool is_vg = ((strcmp(coind->symbol,"VG") == 0) || (strcmp(coind->symbol2, "VG") == 0));
+
+    if (is_vg) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+
+	    bool is_tdc = ((strcmp(coind->symbol,"TDC") == 0) || (strcmp(coind->symbol2, "TDC") == 0));
+
+    if (is_tdc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_dane = ((strcmp(coind->symbol,"DANE") == 0) || (strcmp(coind->symbol2, "DANE") == 0));
+
+    if (is_dane) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_eac = ((strcmp(coind->symbol,"EAC") == 0) || (strcmp(coind->symbol2, "EAC") == 0));
+
+    if (is_eac) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_deco = ((strcmp(coind->symbol,"DECO") == 0) || (strcmp(coind->symbol2, "DECO") == 0));
+
+    if (is_deco) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_fuelx = ((strcmp(coind->symbol,"FUELX") == 0) || (strcmp(coind->symbol2, "FUELX") == 0));
+
+    if (is_fuelx) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_bex = ((strcmp(coind->symbol,"BEX") == 0) || (strcmp(coind->symbol2, "BEX") == 0));
+
+    if (is_bex) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_ltc = ((strcmp(coind->symbol,"LTC") == 0) || (strcmp(coind->symbol2, "LTC") == 0));
+
+    if (is_ltc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_ced = ((strcmp(coind->symbol,"CED") == 0) || (strcmp(coind->symbol2, "CED") == 0));
+
+    if (is_ced) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_bch = ((strcmp(coind->symbol,"BCH") == 0) || (strcmp(coind->symbol2, "BCH") == 0));
+
+    if (is_bch) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_hcc = ((strcmp(coind->symbol,"HCC") == 0) || (strcmp(coind->symbol2, "HCC") == 0));
+
+    if (is_hcc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_ztc = ((strcmp(coind->symbol,"ZTC") == 0) || (strcmp(coind->symbol2, "ZTC") == 0));
+
+    if (is_ztc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_sfc = ((strcmp(coind->symbol,"SFC") == 0) || (strcmp(coind->symbol2, "SFC") == 0));
+
+    if (is_sfc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_maz = ((strcmp(coind->symbol,"MAZ") == 0) || (strcmp(coind->symbol2, "MAZ") == 0));
+
+    if (is_maz) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_cdu = ((strcmp(coind->symbol,"CDU") == 0) || (strcmp(coind->symbol2, "CDU") == 0));
+
+    if (is_cdu) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_mrd = ((strcmp(coind->symbol,"MRD") == 0) || (strcmp(coind->symbol2, "MRD") == 0));
+
+    if (is_mrd) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_bns = ((strcmp(coind->symbol,"BNS") == 0) || (strcmp(coind->symbol2, "BNS") == 0));
+
+    if (is_bns) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_glnc = ((strcmp(coind->symbol,"GLNC") == 0) || (strcmp(coind->symbol2, "GLNC") == 0));
+
+    if (is_glnc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_tip = ((strcmp(coind->symbol,"TIP") == 0) || (strcmp(coind->symbol2, "TIP") == 0));
+
+    if (is_tip) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+
+	    bool is_wdc = ((strcmp(coind->symbol,"WDC") == 0) || (strcmp(coind->symbol2, "WDC") == 0));
+
+    if (is_wdc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+
+	    bool is_picoin = ((strcmp(coind->symbol,"PICOIN") == 0) || (strcmp(coind->symbol2, "PICOIN") == 0));
+
+    if (is_picoin) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	    bool is_vvc = ((strcmp(coind->symbol,"VVC") == 0) || (strcmp(coind->symbol2, "VVC") == 0));
+
+    if (is_vvc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	    bool is_pic = ((strcmp(coind->symbol,"PIC") == 0) || (strcmp(coind->symbol2, "PIC") == 0));
+
+    if (is_pic) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	bool is_bcr = ((strcmp(coind->symbol,"BCR") == 0) || (strcmp(coind->symbol2, "BCR") == 0));
+
+    if (is_bcr) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	bool is_btc = ((strcmp(coind->symbol,"BTC") == 0) || (strcmp(coind->symbol2, "BTC") == 0));
+
+    if (is_btc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	    bool is_bcc = ((strcmp(coind->symbol,"BCC") == 0) || (strcmp(coind->symbol2, "BCC") == 0));
+
+    if (is_bcc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	    bool is_xmy = ((strcmp(coind->symbol,"XMY") == 0) || (strcmp(coind->symbol2, "XMY") == 0));
+
+    if (is_xmy) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }	
+
+	    bool is_fake = ((strcmp(coind->symbol,"FAKE") == 0) || (strcmp(coind->symbol2, "FAKE") == 0));
+
+    if (is_fake) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }	
+	
+	    bool is_dsv = ((strcmp(coind->symbol,"DSV") == 0) || (strcmp(coind->symbol2, "DSV") == 0));
+
+    if (is_dsv) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }	
+
+	    bool is_hustl = ((strcmp(coind->symbol,"HUSTL") == 0) || (strcmp(coind->symbol2, "HUSTL") == 0));
+
+    if (is_hustl) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }	
+	
+	bool is_caty = ((strcmp(coind->symbol,"CATY") == 0) || (strcmp(coind->symbol2, "CATY") == 0));
+
+    if (is_caty) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }	
+	
+	    bool is_uqb = ((strcmp(coind->symbol,"UQB") == 0) || (strcmp(coind->symbol2, "UQB") == 0));
+
+    if (is_uqb) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	    bool is_ctc = ((strcmp(coind->symbol,"CTC") == 0) || (strcmp(coind->symbol2, "CTC") == 0));
+
+    if (is_ctc) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
+	    bool is_scho = ((strcmp(coind->symbol,"SCHO") == 0) || (strcmp(coind->symbol2, "SCHO") == 0));
+
+    if (is_scho) {
+        if (json) json_value_free(json);
+
+        json = rpc_call(&coind->rpc, "getnewaddress", params);
+    }
+	
 	if (json->u.object.values[0].value->type == json_string) {
 		strcpy(coind->wallet, json->u.object.values[0].value->u.string.ptr);
 	}
@@ -271,3 +623,9 @@ void coind_terminate(YAAMP_COIND *coind)
 
 //	coind_terminate(coind);
 //}
+
+
+
+
+
+
