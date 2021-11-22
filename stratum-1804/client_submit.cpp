@@ -236,7 +236,13 @@ static void client_do_submit(YAAMP_CLIENT *client, YAAMP_JOB *job, YAAMP_JOB_VAL
 			sprintf(count_hex, "fd%02x%02x", templ->txcount & 0xFF, templ->txcount >> 8);
 
 		memset(block_hex, 0, block_size);
-		sprintf(block_hex, "%s%s%s", submitvalues->header_be, count_hex, submitvalues->coinbase);
+		// sprintf(block_hex, "%s%s%s", submitvalues->header_be, count_hex, submitvalues->coinbase);
+
+		if (!strcmp("sha256csm", g_current_algo->name)) {
+			sprintf(block_hex, "%s%s%s%s", submitvalues->header_be, "0000000000000000000000000000000000000000000000000000000000000000", count_hex, submitvalues->coinbase);
+		} else {
+			sprintf(block_hex, "%s%s%s", submitvalues->header_be, count_hex, submitvalues->coinbase);
+		}
 
 		if (g_current_algo->name && !strcmp("jha", g_current_algo->name)) {
 			// block header of 88 bytes

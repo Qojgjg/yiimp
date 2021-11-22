@@ -32,7 +32,6 @@
 #include "insecure_memzero.h"
 #include "sysendian_yp.h"
 
-#include "yespower/insecure_memzero.h"
 #include "sha256-P.h"
 
 #ifdef __ICC
