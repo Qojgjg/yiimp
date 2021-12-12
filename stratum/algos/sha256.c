@@ -280,3 +280,8 @@ void sha256_double_hash(const char *input, char *output, unsigned int len)
 	sha256_hash(output1, output, 32);
 }
 
+
+
+
+
+
