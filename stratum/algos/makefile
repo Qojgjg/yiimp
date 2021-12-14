@@ -23,7 +23,7 @@ SOURCES=lyra2re.c lyra2v2.c Lyra2.c lyra2z.c lyra2z330.c Lyra2-z.c Sponge.c alli
 	hive.c pomelo.c hex.c argon2d.c geek.c bcd.c \
 	phi.c phi2.c phi5.c polytimos.c rainforest.c renesis.c skunk.c sib.c veltor.c gost.c aergo.c x22i.c x21s.c lbk3.c pipehash.c dedal.c x20r.c gltalgos.c lane.c x25x.c \
 	beenode.c honeycomb/facet_one.c honeycomb/facet_two.c honeycomb/facet_three.c honeycomb/facet_four.c honeycomb/facet_five.c honeycomb/facet_six.c honeycomb/facets_helper.c \
-	gr.c cryptonote/crypto/aesb.c  cryptonote/crypto/c_blake256.c  cryptonote/crypto/c_groestl.c  cryptonote/crypto/c_jh.c  cryptonote/crypto/c_keccak.c  cryptonote/crypto/c_skein.c  cryptonote/crypto/hash.c  cryptonote/crypto/oaes_lib.c \
+	ghostrider.c cryptonote/crypto/aesb.c  cryptonote/crypto/c_blake256.c  cryptonote/crypto/c_groestl.c  cryptonote/crypto/c_jh.c  cryptonote/crypto/c_keccak.c  cryptonote/crypto/c_skein.c  cryptonote/crypto/hash.c  cryptonote/crypto/oaes_lib.c \
 	cryptonote/cryptonight.c \
 	cryptonote/cryptonight_dark.c cryptonote/cryptonight_dark_lite.c cryptonote/cryptonight_fast.c \
 	cryptonote/cryptonight_lite.c cryptonote/cryptonight_soft_shell.c cryptonote/cryptonight_turtle.c \

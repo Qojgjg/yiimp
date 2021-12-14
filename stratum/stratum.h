@@ -244,7 +244,7 @@ void sha256_double_hash_hex(const char *input, char *output, unsigned int len);
 #include "algos/x22.h"
 #include "algos/phi5.h"
 #include "algos/lyra2z330.h"
-#include "algos/gr.h"
+#include "algos/ghostrider.h"
 #include "algos/heavyhash/heavyhash.h"
 #include "algos/anime.h"
 #include "algos/cosa.h"

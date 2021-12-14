@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "gr.h"
+#include "ghostrider.h"
 #include "../sha3/sph_blake.h"
 #include "../sha3/sph_bmw.h"
 #include "../sha3/sph_groestl.h"
@@ -102,7 +102,7 @@ static void getAlgoString(void *mem, unsigned int size, uint8_t* selectedAlgoOut
   }
 }
 
-void gr_hash(const char* input, char* output, uint32_t len) {
+void ghostrider_hash(const char* input, char* output, uint32_t len) {
 	uint32_t hash[64/4];
 	sph_blake512_context ctx_blake;
 	sph_bmw512_context ctx_bmw;

@@ -140,7 +140,7 @@ YAAMP_ALGO g_algos[] =
 	{"dmd-gr", groestl_hash, 0x100, 0, 0}, /* diamond (double groestl) */
 	{"fresh", fresh_hash, 0x100, 0, 0},
 	{"geek", geek_hash, 1, 0, 0},
-	{"gr", gr_hash, 0x10000, 0, 0},
+	{"ghostrider", ghostrider_hash, 0x10000, 0, 0},
 	{"groestl", groestl_hash, 0x100, 0, sha256_hash_hex }, /* groestlcoin */
 	{"heavyhash", heavyhash_hash, 1, 0, 0}, /* OBTC */
 	{"hex", hex_hash, 0x100, 0, sha256_hash_hex },
