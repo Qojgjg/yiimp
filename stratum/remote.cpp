@@ -177,7 +177,7 @@ void *remote_thread(void *p)
 		json_value *json_params = json_get_array(json, "params");
 		json_value *json_result = json_get_array(json, "result");
 
-		if(id == 1111)
+		if(id == 1)
 		{
 			remote->status = YAAMP_REMOTE_AUTHORIZE;
 
