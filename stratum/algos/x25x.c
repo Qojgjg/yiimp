@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #include <sha3/sph_blake.h>
@@ -22,13 +20,11 @@
 #include <sha3/sph_tiger.h>
 #include <sha3/sph_panama.h>
 #include <sha3/blake2s.h>
+#include <sha3/lane.h>
 
 #include "SWIFFTX/SWIFFTX.h"
-#include "lane.h"
 #include "gost.h"
 #include "Lyra2.h"
-
-#include "common.h"
 
 void x25x_hash(const char* input, char* output, uint32_t len)
 {
@@ -54,8 +50,7 @@ void x25x_hash(const char* input, char* output, uint32_t len)
         sph_sha256_context        ctx_sha;
         sph_panama_context        ctx_panama;
 
-//	unsigned char _ALIGN(128) hash[25][64] = { [0 ... 24] = { [0 ... 63] = 0 } };
-	unsigned char _ALIGN(128) hash[25][64] = { 0 };
+	unsigned char hash[25][64] = { 0 };
 
 	sph_blake512_init(&ctx_blake);
 	sph_blake512(&ctx_blake, input, len);
